@@ -9,7 +9,11 @@ def construct_url(run_number, reconstruction_type, resource):
     return "{}{}{}{}".format(BASE_URL, run_number, dataset, resource)
 
 
+def get_json(run_number, reconstruction_type, resource):
+    url = construct_url(run_number, reconstruction_type, resource)
+    return cernrequests.get(url).json()
+
+
 def get_TrackEtaPhi_ImpactPoint_GenTk(run_number, reconstruction_type):
     resource = "/Tracking/TrackParameters/generalTracks/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk"
-    url = construct_url(run_number, reconstruction_type, resource)
-    return cernrequests.get(url).text
+    return get_json(run_number, reconstruction_type, resource)

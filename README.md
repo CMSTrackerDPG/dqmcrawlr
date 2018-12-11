@@ -13,6 +13,7 @@ pip install git+https://github.com/ptrstn/dqmcrawlr
 Request a [Grid User Certificate](https://ca.cern.ch/ca/) and convert into public and private key:
 
 ```bash
+mkdir -p ~/private
 openssl pkcs12 -clcerts -nokeys -in myCertificate.p12 -out ~/private/usercert.pem
 openssl pkcs12 -nocerts -in myCertificate.p12 -out ~/private/userkey.tmp.pem
 openssl rsa -in ~/private/userkey.tmp.pem -out ~/private/userkey.pem
@@ -20,7 +21,11 @@ openssl rsa -in ~/private/userkey.tmp.pem -out ~/private/userkey.pem
 
 The certificates have to be **passwordless**.
 
-Then download the [CERN ROOT certificate](https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt) at [https://cafiles.cern.ch/cafiles/](https://cafiles.cern.ch/cafiles/certificates/Download.aspx?ca=grid) and copy into ```~/private/root.crt```
+Then download the [CERN ROOT certificate](https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt) at [https://cafiles.cern.ch/cafiles/](https://cafiles.cern.ch/cafiles/certificates/Download.aspx?ca=grid) and copy into ```~/private/root.crt```:
+
+```bash
+wget https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt -O ~/private/root.crt
+```
 
 After that you have to convert into a PEM format with:
 

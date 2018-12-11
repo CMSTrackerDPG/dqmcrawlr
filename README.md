@@ -69,3 +69,7 @@ pip install -r testing-requirements.txt
 pip install -e .
 pytest
 ```
+
+## References
+
+- https://twiki.cern.ch/twiki/bin/viewauth/CMS/DQMToJSON

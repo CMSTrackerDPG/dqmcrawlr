@@ -13,9 +13,9 @@ pip install git+https://github.com/ptrstn/dqmcrawlr
 Request a [Grid User Certificate](https://ca.cern.ch/ca/) and convert into public and private key:
 
 ```bash
-openssl pkcs12 -clcerts -nokeys -in myCert.p12 -out ~/private/myCert.pem
-openssl pkcs12 -nocerts -in myCert.p12 -out ~/private/myCert.tmp.key
-openssl rsa -in ~/private/myCert.tmp.key -out ~/private/myCert.key
+openssl pkcs12 -clcerts -nokeys -in myCertificate.p12 -out ~/private/usercert.pem
+openssl pkcs12 -nocerts -in myCertificate.p12 -out ~/private/userkey.tmp.pem
+openssl rsa -in ~/private/userkey.tmp.pem -out ~/private/userkey.pem
 ```
 
 The certificates have to be **passwordless**.

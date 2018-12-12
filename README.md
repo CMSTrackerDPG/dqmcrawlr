@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/ptrstn/dqmcrawlr.svg?branch=master)](https://travis-ci.com/ptrstn/dqmcrawlr)
+
 # dqmcrawlr
 
 Tool used to crawl a few plots from the CMS Data Quality Monitor web tool.

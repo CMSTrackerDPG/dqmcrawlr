@@ -1,11 +1,11 @@
 from __future__ import print_function
 
-import sys
-
 import argparse
 import json
 import re
+import sys
 
+from dqmcrawlr.decorators import time_measured
 from dqmcrawlr.jsonfairy import get_json
 from dqmcrawlr.utils import open_runs, save_to_disk
 
@@ -27,6 +27,14 @@ def parse_arguments():
     return parser.parse_args()
 
 
+@time_measured
+def retrieve_resource(run_number, reconstruction, resource, destination_folder):
+    json_output = get_json(run_number, reconstruction, resource)
+    path = "{}/{}_{}.json".format(destination_folder, run_number, reconstruction)
+    save_to_disk(json.dumps(json_output, indent=2), path)
+    print("OK", end="")
+
+
 def main():
     args = parse_arguments()
     runs = open_runs(args.input)
@@ -37,18 +45,14 @@ def main():
     for run in runs:
         run_number = run["run_number"]
         reconstruction = run["reconstruction"]
-        print("Crawling {} {}...".format(run_number, reconstruction), end="")
 
+        print("Crawling {} {:10s} ".format(run_number, "{}...".format(reconstruction)), end="")
         sys.stdout.flush()
+
         try:
-            json_output = get_json(run_number, reconstruction, resource)
-            path = "{}/{}_{}.json".format(
-                destination_folder, run_number, reconstruction
-            )
-            save_to_disk(json.dumps(json_output, indent=2), path)
-            print(" OK")
+            retrieve_resource(run_number, reconstruction, resource, destination_folder)
         except:
-            print(" ERROR")
+            print("ERROR")
 
     print("Done.")
     print()

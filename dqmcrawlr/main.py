@@ -1,3 +1,7 @@
+from __future__ import print_function
+
+import sys
+
 import argparse
 import json
 import re
@@ -33,9 +37,9 @@ def main():
     for run in runs:
         run_number = run["run_number"]
         reconstruction = run["reconstruction"]
-        print(
-            "Crawling {} {}...".format(run_number, reconstruction), end="", flush=True
-        )
+        print("Crawling {} {}...".format(run_number, reconstruction), end="")
+
+        sys.stdout.flush()
         try:
             json_output = get_json(run_number, reconstruction, resource)
             path = "{}/{}_{}.json".format(

@@ -38,8 +38,21 @@ def retrieve_resource(run_number, reconstruction, resource, destination_folder):
     print("OK", end="")
 
 
+def check_certificates():
+    cert, key = certs.default_user_certificate_paths()
+    if not os.path.isfile(cert):
+        print("Error: {} does not exist".format(cert))
+        sys.exit()
+    if not os.path.isfile(key):
+        print("Error: {} does not exist".format(key))
+        sys.exit()
+
+
 def main():
     args = parse_arguments()
+
+    check_certificates()
+
     runs = open_runs(args.input)
     resource = args.resource
     destination_folder = re.sub("\/.*\/", "", resource)
@@ -54,8 +67,9 @@ def main():
 
         try:
             retrieve_resource(run_number, reconstruction, resource, destination_folder)
-        except:
+        except Exception as e:
             print("ERROR")
+            print(e)
 
     print("Done.")
     print()

@@ -1,4 +1,5 @@
-from dqmcrawlr import cernrequests
+import cernrequests
+
 from dqmcrawlr.dataset import get_dataset
 
 BASE_URL = "https://cmsweb.cern.ch/dqm/offline/jsonfairy/archive/"

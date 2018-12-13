@@ -2,8 +2,11 @@ from __future__ import print_function
 
 import argparse
 import json
+import os
 import re
 import sys
+
+from cernrequests import certs
 
 from dqmcrawlr.decorators import time_measured
 from dqmcrawlr.jsonfairy import get_json

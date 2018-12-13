@@ -1,6 +1,6 @@
 import re
 
-from dqmcrawlr import cernrequests
+import cernrequests
 
 OFFLINE_URL = "https://cmsweb.cern.ch/dqm/offline/"
 ONLINE_URL = "https://cmsweb.cern.ch/dqm/online/"

@@ -1,8 +1,10 @@
 import json
 import re
 
-from dqmcrawlr import cernrequests
+import cernrequests
+
 from dqmcrawlr.dqm import get_offline_session_url
+from dqmcrawlr.exceptions import RunDoesNotExist
 
 
 def translate_reconstruction_type(reconstruction_type):
@@ -54,13 +56,16 @@ def get_available_datasets(run_number):
     text = re.sub("'", '"', response.text)[1:-1]
     json_response = json.loads(text)
 
-    items = json_response[1]["items"][0]["items"]
+    try:
+        items = json_response[1]["items"][0]["items"]
+    except IndexError:
+        raise RunDoesNotExist("Unable to find datasets for run {}".format(run_number))
     datasets = [item["dataset"] for item in items]
 
     return datasets
 
 
-def extract_dataset(datasets, possible_reco_types):
+def _extract_dataset(datasets, possible_reco_types):
     # TODO replace with filter and any
     for reco in possible_reco_types:
         for dataset in datasets:
@@ -68,8 +73,13 @@ def extract_dataset(datasets, possible_reco_types):
                 return dataset
     return None
 
+def _extract_run_type(dataset):
+    """
+    :param dataset: dataset
+    :return: "Cosmics" or "Collisions"
+    """
 
 def get_dataset(run_number, reconstruction_type):
     datasets = get_available_datasets(run_number)
     recos = translate_reconstruction_type(reconstruction_type)
-    return extract_dataset(datasets, recos)
+    return _extract_dataset(datasets, recos)

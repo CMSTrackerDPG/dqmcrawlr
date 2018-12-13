@@ -7,7 +7,7 @@ Tool used to crawl a few plots from the CMS Data Quality Monitor web tool.
 ## Installation
 
 ```bash
-pip install git+https://github.com/ptrstn/dqmcrawlr
+pip install --process-dependency-links git+https://github.com/ptrstn/dqmcrawlr
 ```
 
 ## Prerequisites

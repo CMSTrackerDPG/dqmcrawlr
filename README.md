@@ -15,34 +15,20 @@ pip install git+https://github.com/ptrstn/dqmcrawlr
 Request a [Grid User Certificate](https://ca.cern.ch/ca/) and convert into public and private key:
 
 ```bash
-mkdir -p ~/private
-openssl pkcs12 -clcerts -nokeys -in myCertificate.p12 -out ~/private/usercert.pem
-openssl pkcs12 -nocerts -in myCertificate.p12 -out ~/private/userkey.tmp.pem
-openssl rsa -in ~/private/userkey.tmp.pem -out ~/private/userkey.pem
+mkdir -p ~/.globus
+openssl pkcs12 -clcerts -nokeys -in myCertificate.p12 -out ~/.globus/usercert.pem
+openssl pkcs12 -nocerts -in myCertificate.p12 -out ~/.globus/userkey.tmp.pem
+openssl rsa -in ~/.globus/userkey.tmp.pem -out ~/.globus/userkey.pem
 ```
 
 The certificates have to be **passwordless**.
-
-Then download the [CERN ROOT certificate](https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt) at [https://cafiles.cern.ch/cafiles/](https://cafiles.cern.ch/cafiles/certificates/Download.aspx?ca=grid) and copy into ```~/private/root.crt```:
-
-```bash
-wget https://cafiles.cern.ch/cafiles/certificates/CERN%20Root%20Certification%20Authority%202.crt -O ~/private/root.crt
-```
-
-After that you have to convert into a PEM format with:
-
-```bash
-cd ~/private/
-openssl x509 -inform der -in root.crt -out root.pem
-```
-
 
 ## Usage
 
 After you have installed dqmcrawlr with pip the dqmcrawlr cli script should be available.
 
 ```bash
-dqmcrawlr --help
+dqmcrawl --help
 ```
 
 ### Example
@@ -54,11 +40,12 @@ dqmcrawl --input example/runs.txt --resource "/Tracking/TrackParameters/generalT
 Output:
 ```
 Crawling 5 runs of the resource /Tracking/TrackParameters/generalTracks/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
-Crawling 321012 Express... OK
-Crawling 825310 Prompt... ERROR
-Crawling 325310 Prompt... OK
-Crawling 321012 Express... OK
-Crawling 325309 Prompt... OK
+Crawling 321012 Express... OK   1.96s
+Crawling 825310 Prompt...  ERROR
+Unable to find datasets for run 825310
+Crawling 325310 Prompt...  OK   2.02s
+Crawling 321012 Express... OK   2.11s
+Crawling 325309 Prompt...  OK   2.13s
 Done.
 
 All files have been saved in the folder 'TrackEtaPhi_ImpactPoint_GenTk'
@@ -71,9 +58,8 @@ git clone https://github.com/ptrstn/dqmcrawlr
 cd dqmcrawlr
 python3 -m venv venv
 . venv/bin/active
-pip install -r requirements.txt
+pip install --process-dependency-links -e .
 pip install -r testing-requirements.txt
-pip install -e .
 pytest
 ```
 

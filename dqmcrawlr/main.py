@@ -9,8 +9,8 @@ import sys
 from cernrequests import certs
 
 from dqmcrawlr.decorators import time_measured
-from dqmcrawlr.jsonfairy import get_json
-from dqmcrawlr.utils import open_runs, save_to_disk
+from dqmcrawlr.jsonfairy import JSON_Fairy
+from dqmcrawlr.utils import open_runs, save_to_disk, open_dataset_cache, save_dataset_cache_to_disk
 
 
 def parse_arguments():
@@ -27,12 +27,17 @@ def parse_arguments():
 
     parser.add_argument("-r", "--resource", help="name of the resource/ histogram")
 
+    parser.add_argument("-c", "--cached", help="Use existing dataset cache to save time.", action="store_true")
+
+
     return parser.parse_args()
 
 
 @time_measured
-def retrieve_resource(run_number, reconstruction, resource, destination_folder):
-    json_output = get_json(run_number, reconstruction, resource)
+def retrieve_resource(
+        json_fairy, run_number, reconstruction, resource, destination_folder
+):
+    json_output = json_fairy.get_json(run_number, reconstruction, resource)
     path = "{}/{}_{}.json".format(destination_folder, run_number, reconstruction)
     save_to_disk(json.dumps(json_output, indent=2), path)
     print("OK", end="")
@@ -57,16 +62,25 @@ def main():
     resource = args.resource
     destination_folder = re.sub("\/.*\/", "", resource)
 
-    print("Crawling {} runs of the resource {}".format(len(runs), resource))
+    dataset_cache = open_dataset_cache() if args.cached else None
+
+    json_fairy = JSON_Fairy(dataset_cache=dataset_cache)
+
+    print("Crawling {} runs of the resource {}\n".format(len(runs), resource))
     for run in runs:
         run_number = run["run_number"]
         reconstruction = run["reconstruction"]
 
-        print("Crawling {} {:10s} ".format(run_number, "{}...".format(reconstruction)), end="")
+        print(
+            "{} {:10s} ".format(run_number, "{}...".format(reconstruction)),
+            end="",
+        )
         sys.stdout.flush()
 
         try:
-            retrieve_resource(run_number, reconstruction, resource, destination_folder)
+            retrieve_resource(
+                json_fairy, run_number, reconstruction, resource, destination_folder
+            )
         except Exception as e:
             print("ERROR")
             print(e)
@@ -74,6 +88,12 @@ def main():
     print("Done.")
     print()
     print("All files have been saved in the folder '{}'".format(destination_folder))
+
+    if args.cached:
+        print()
+        print("Saving dataset cache...")
+        save_dataset_cache_to_disk(json_fairy.dqm_session.cache.datasets)
+        print("Done.")
 
 
 if __name__ == "__main__":

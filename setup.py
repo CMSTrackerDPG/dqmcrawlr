@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="dqmcrawlr",
-    version="0.2",
+    version="0.3",
     desription="CERN CMS Data Quality Monitor JSON crawler.",
     url="https://github.com/ptrstn/dqmcrawlr",
     author="Peter Stein",

@@ -199,9 +199,7 @@ def _extract_dataset(datasets, reco):
         )
 
     if not filtered:
-        raise DatasetDoesNotExist(
-            "Unable to find '{}' dataset".format(reco)
-        )
+        raise DatasetDoesNotExist("Unable to find '{}' dataset".format(reco))
     assert len(filtered) == 1
     return filtered[0]
 

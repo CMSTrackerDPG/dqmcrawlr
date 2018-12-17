@@ -10,7 +10,12 @@ from cernrequests import certs
 
 from dqmcrawlr.decorators import time_measured
 from dqmcrawlr.jsonfairy import JSON_Fairy
-from dqmcrawlr.utils import open_runs, save_to_disk, open_dataset_cache, save_dataset_cache_to_disk
+from dqmcrawlr.utils import (
+    open_runs,
+    save_to_disk,
+    open_dataset_cache,
+    save_dataset_cache_to_disk,
+)
 
 
 def parse_arguments():
@@ -27,15 +32,19 @@ def parse_arguments():
 
     parser.add_argument("-r", "--resource", help="name of the resource/ histogram")
 
-    parser.add_argument("-c", "--cached", help="Use existing dataset cache to save time.", action="store_true")
-
+    parser.add_argument(
+        "-c",
+        "--cached",
+        help="Use existing dataset cache to save time.",
+        action="store_true",
+    )
 
     return parser.parse_args()
 
 
 @time_measured
 def retrieve_resource(
-        json_fairy, run_number, reconstruction, resource, destination_folder
+    json_fairy, run_number, reconstruction, resource, destination_folder
 ):
     json_output = json_fairy.get_json(run_number, reconstruction, resource)
     path = "{}/{}_{}.json".format(destination_folder, run_number, reconstruction)
@@ -71,10 +80,7 @@ def main():
         run_number = run["run_number"]
         reconstruction = run["reconstruction"]
 
-        print(
-            "{} {:10s} ".format(run_number, "{}...".format(reconstruction)),
-            end="",
-        )
+        print("{} {:10s} ".format(run_number, "{}...".format(reconstruction)), end="")
         sys.stdout.flush()
 
         try:

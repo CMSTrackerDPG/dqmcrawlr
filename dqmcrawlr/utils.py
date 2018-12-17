@@ -22,7 +22,7 @@ def open_dataset_cache():
     try:
         with open(DATASET_CACHE_FILE_NAME, "r") as file:
             return json.load(file)
-    except FileNotFoundError:
+    except IOError:
         return None
 
 

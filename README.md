@@ -10,6 +10,28 @@ Tool used to crawl a few plots from the CMS Data Quality Monitor web tool.
 pip install --process-dependency-links git+https://github.com/ptrstn/dqmcrawlr
 ```
 
+### lxplus
+
+Make sure that your Python version is at least ```2.7``` or ```3.4```. If not then [enable a newer version](https://cern.service-now.com/service-portal/article.do?n=KB0000730) with:
+
+```bash
+scl enable python27 bash
+```
+
+or 
+
+```bash
+scl enable rh-python36 bash
+```
+
+Then you can install dqmcrawlr it with:
+
+```bash
+virtualenv venv
+. venv/bin/activate
+pip install --process-dependency-links git+https://github.com/ptrstn/dqmcrawlr
+```
+
 ## Prerequisites
 
 Request a [Grid User Certificate](https://ca.cern.ch/ca/) and convert into public and private key:

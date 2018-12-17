@@ -197,6 +197,8 @@ def _extract_dataset(datasets, reco):
                 datasets,
             )
         )
+    else:
+        raise ValueError("Unknown reconstruction type: '{}'".format(reco))
 
     if not filtered:
         raise DatasetDoesNotExist("Unable to find '{}' dataset".format(reco))

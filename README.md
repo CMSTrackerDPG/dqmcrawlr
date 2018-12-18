@@ -7,7 +7,7 @@ Tool used to crawl a few plots from the CMS Data Quality Monitor web tool.
 ## Installation
 
 ```bash
-pip install --process-dependency-links git+https://github.com/ptrstn/dqmcrawlr
+pip install git+https://github.com/ptrstn/dqmcrawlr
 ```
 
 ### lxplus
@@ -29,7 +29,7 @@ Then you can install dqmcrawlr it with:
 ```bash
 virtualenv venv
 . venv/bin/activate
-pip install --process-dependency-links git+https://github.com/ptrstn/dqmcrawlr
+pip install git+https://github.com/ptrstn/dqmcrawlr
 ```
 
 ## Prerequisites
@@ -104,7 +104,7 @@ git clone https://github.com/ptrstn/dqmcrawlr
 cd dqmcrawlr
 python3 -m venv venv
 . venv/bin/active
-pip install --process-dependency-links -e .
+pip install -e .
 pip install -r testing-requirements.txt
 pytest
 ```

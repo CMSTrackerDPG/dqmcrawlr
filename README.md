@@ -66,29 +66,34 @@ optional arguments:
   -c, --cached                      Use existing dataset cache to save time
 ```
 
-### Example
+### Offline Example
 
 ```bash
 dqmcrawl --cached --input example/runs.txt --resource "/Tracking/TrackParameters/generalTracks/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk"
 ```
 
 Output:
-```
-Crawling 11 runs of the resource /Tracking/TrackParameters/generalTracks/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
 
-321012 Express... OK    0.28s
+```
+Crawling 12 runs of the resource /Tracking/TrackParameters/generalTracks/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
+
+321012 Express... OK    0.22s
 825310 Prompt...  ERROR
 Unable to find datasets for run 825310
-325310 Prompt...  OK    0.30s
-321012 Express... OK    0.32s
+325310 SomethingWrong... ERROR
+Unknown reconstruction type: 'somethingwrong'
+325310 Prompt...  OK    0.22s
+321012 Express... OK    0.22s
 321012 reReco...  ERROR
 Unable to find 'rereco' dataset
-325309 Prompt...  OK    0.28s
-327244 Express... OK    0.37s
-327244 Prompt...  OK    0.96s
-306631 reReco...  OK    0.29s
-306631 Express... OK    0.29s
-306631 Prompt...  OK    0.29s
+325309 Prompt...  OK    0.21s
+327244 Express... ERROR
+Unable to find plot for run '327244'
+327244 Prompt...  ERROR
+Unable to find plot for run '327244'
+306631 reReco...  OK    0.22s
+306631 Express... OK    0.22s
+306631 Prompt...  OK    0.21s
 Done.
 
 All files have been saved in the folder 'TrackEtaPhi_ImpactPoint_GenTk'
@@ -97,6 +102,32 @@ Saving dataset cache...
 Done.
 ```
 
+### Online Example
+
+**Note**: When using ```--online``` then the reconstruction type is ignored and duplicate run numbers are removed.
+
+```bash
+dqmcrawl --online --input example/runs.txt --resource "/Tracking/TrackParameters/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk"
+```
+
+Output:
+
+```
+Crawling 6 runs of the resource /Tracking/TrackParameters/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
+
+306631 online...  OK    0.19s
+321012 online...  OK    0.22s
+325309 online...  OK    0.22s
+325310 online...  OK    0.21s
+327244 online...  ERROR
+Unable to find plot for run '327244'
+825310 online...  ERROR
+Unable to find plot for run '825310'
+Done.
+
+All files have been saved in the folder 'TrackEtaPhi_ImpactPoint_GenTk'
+
+```
 ## Development
 
 ```bash

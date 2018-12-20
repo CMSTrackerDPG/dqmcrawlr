@@ -191,3 +191,4 @@ modules.xml
 # End of https://www.gitignore.io/api/pycharm+all
 
 .dqmcrawlrcache.json
+TrackEtaPhi_ImpactPoint_GenTk/

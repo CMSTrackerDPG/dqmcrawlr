@@ -1,8 +1,8 @@
-from dqmcrawlr.dqm import DQM_Session
+from dqmcrawlr.dqm import DQMSession
 
 
 def test_get_available_datasets():
-    dqm_session = DQM_Session()
+    dqm_session = DQMSession()
     datasets = dqm_session.get_available_datasets(321012)
 
     assert "/Commissioning/Run2018D-PromptReco-v2/DQMIO" in datasets
@@ -12,13 +12,13 @@ def test_get_available_datasets():
 
 
 def test_single_dataset():
-    assert "/StreamExpress/Run2018D-Express-v1/DQMIO" == DQM_Session().get_dataset(
+    assert "/StreamExpress/Run2018D-Express-v1/DQMIO" == DQMSession().get_dataset(
         321012, "Express"
     )
 
 
 def test_get_lumisections():
-    assert "534" == DQM_Session().get_lumisections(322222, "Prompt")
+    assert "534" == DQMSession().get_lumisections(322222, "Prompt")
 
 
 def test_multipe_dataset():
@@ -26,11 +26,12 @@ def test_multipe_dataset():
     generated with:
 
     for run in RunInfo.objects.all().filter(problem_categories=10):
-        print("assert '{}' == get_dataset([{}, '{}'])".format(run.type.dataset, run.run_number, run.type.reco))
-
+        print("assert '{}' == get_dataset([{}, '{}'])".format(
+            run.type.dataset, run.run_number, run.type.reco)
+        )
     """
 
-    session = DQM_Session()
+    session = DQMSession()
 
     assert "/Cosmics/Run2018E-PromptReco-v1/DQMIO" == session.get_dataset(
         325680, "Prompt"
@@ -59,7 +60,7 @@ def test_multipe_dataset():
 
 
 def test_rereco():
-    session = DQM_Session()
+    session = DQMSession()
 
     assert "/SingleTrack/Run2017G-17Nov2017-v1/DQMIO" == session.get_dataset(
         306645, "reReco"
@@ -73,7 +74,7 @@ def test_rereco():
 
 
 def test_heavy_ion():
-    session = DQM_Session()
+    session = DQMSession()
 
     assert "/StreamHIExpress/HIRun2018A-Express-v1/DQMIO" == session.get_dataset(
         327564, "Express"

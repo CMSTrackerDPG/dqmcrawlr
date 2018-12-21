@@ -4,3 +4,7 @@ class RunDoesNotExist(Exception):
 
 class DatasetDoesNotExist(Exception):
     pass
+
+
+class JSONNotFound(Exception):
+    pass

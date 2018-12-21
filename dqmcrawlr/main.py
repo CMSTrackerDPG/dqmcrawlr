@@ -8,8 +8,8 @@ import os
 import re
 from cernrequests import certs
 
+from dqmcrawlr.crawler import DQMCrawler
 from dqmcrawlr.decorators import time_measured
-from dqmcrawlr.jsonfairy import OfflineJSONFairy, OnlineJSONFairy
 from dqmcrawlr.utils import (
     open_runs,
     save_to_disk,
@@ -47,19 +47,10 @@ def parse_arguments():
 
 
 @time_measured
-def retrieve_offline_resource(
-    json_fairy, run_number, reconstruction, resource, destination_folder
+def retrieve_resource(
+    crawler, run_number, reconstruction, resource, destination_folder
 ):
-    json_output = json_fairy.get_json(run_number, reconstruction, resource)
-    path = "{}/{}_{}.json".format(destination_folder, run_number, reconstruction)
-    save_to_disk(json.dumps(json_output, indent=2), path)
-    print("OK", end="")
-
-
-@time_measured
-def retrieve_online_resource(json_fairy, run_number, resource, destination_folder):
-    reconstruction = "online"
-    json_output = json_fairy.get_json(run_number, resource)
+    json_output = crawler.get_json(run_number, reconstruction, resource)
     path = "{}/{}_{}.json".format(destination_folder, run_number, reconstruction)
     save_to_disk(json.dumps(json_output, indent=2), path)
     print("OK", end="")
@@ -75,47 +66,44 @@ def check_certificates():
         sys.exit()
 
 
+def _remove_duplicates(runs):
+    run_numbers = sorted(set([run["run_number"] for run in runs]))
+    return [{"run_number": run_number} for run_number in run_numbers]
+
+
 def main():
     args = parse_arguments()
 
+    online_service_only = args.online
+    use_dataset_cache = args.cached
+    input_file_name = args.input
+    resource = args.resource
+
+    destination_folder = re.sub(r"\/.*\/", "", resource)
+
     check_certificates()
 
-    dataset_cache = open_dataset_cache() if args.cached else None
+    dataset_cache = open_dataset_cache() if use_dataset_cache else None
 
-    if args.online:
-        json_fairy = OnlineJSONFairy()
-        reconstruction = "online"
-    else:  # offline
-        json_fairy = OfflineJSONFairy(dataset_cache=dataset_cache)
+    crawler = DQMCrawler(dataset_cache=dataset_cache)
 
-    runs = open_runs(args.input)
+    runs = open_runs(input_file_name)
 
-    if args.online:
-        # Remove duplicates
-        run_numbers = sorted(set([run["run_number"] for run in runs]))
-        runs = [{"run_number": run_number} for run_number in run_numbers]
-
-    resource = args.resource
-    destination_folder = re.sub(r"\/.*\/", "", resource)
+    if online_service_only:
+        runs = _remove_duplicates(runs)
 
     print("Crawling {} runs of the resource {}\n".format(len(runs), resource))
     for run in runs:
         run_number = run["run_number"]
-        if not args.online:
-            reconstruction = run["reconstruction"]
+        reconstruction = run["reconstruction"] if not online_service_only else "online"
 
         print("{} {:10s} ".format(run_number, "{}...".format(reconstruction)), end="")
         sys.stdout.flush()
 
         try:
-            if args.online:
-                retrieve_online_resource(
-                    json_fairy, run_number, resource, destination_folder
-                )
-            else:
-                retrieve_offline_resource(
-                    json_fairy, run_number, reconstruction, resource, destination_folder
-                )
+            retrieve_resource(
+                crawler, run_number, reconstruction, resource, destination_folder
+            )
         except Exception as e:
             print("ERROR")
             print(e)
@@ -127,7 +115,7 @@ def main():
     if args.cached:
         print()
         print("Saving dataset cache...")
-        save_dataset_cache_to_disk(json_fairy.dqm_session.cache.datasets)
+        save_dataset_cache_to_disk(crawler.dqm_session.cache.datasets)
         print("Done.")
 
 

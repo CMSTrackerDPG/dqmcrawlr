@@ -1,7 +1,5 @@
-import json
-import re
-
 import cernrequests
+import re
 
 from .exceptions import RunDoesNotExist, DatasetDoesNotExist
 
@@ -9,7 +7,7 @@ OFFLINE_URL = "https://cmsweb.cern.ch/dqm/offline/"
 ONLINE_URL = "https://cmsweb.cern.ch/dqm/online/"
 
 
-class DQM_Cache:
+class DQMCache:
     def __init__(self):
         self.datasets = {}
         self.lumis = {}  # TODO
@@ -21,23 +19,23 @@ class DQM_Cache:
         return self.datasets.get(run_number, None)
 
 
-class DQM_Session:
+class DQMSession:
     def __init__(self):
         self.session_url = get_offline_session_url()
-        self.cache = DQM_Cache()
+        self.cache = DQMCache()
 
     def get_available_datasets(self, run_number):
         """
         Retrieving a list of all available datasets for a specific run
         in a very painful and slow way
 
-        First sets the Session to choose Samples by doing:
+        First sets the session to choose samples by doing:
         '/chooseSample?vary=run;order=dataset'
 
-        then sets the Session to click on the "any" checkbox by doing:
+        then sets the session to click on the "any" checkbox by doing:
         "/modify?vary=any"
 
-        then sets the Session to use the given run number by doing:
+        then sets the session to use the given run number by doing:
         "/modify?pat=321012"
 
         :param run_number: Run number
@@ -53,9 +51,7 @@ class DQM_Session:
         cernrequests.get("{}{}".format(self.session_url, first_step))
         response = cernrequests.get("{}{}".format(self.session_url, second_step))
 
-        # Make response json compatible
-        text = re.sub("'", '"', response.text)[1:-1]
-        json_response = json.loads(text)
+        json_response = eval(response.text)
 
         try:
             items = json_response[1]["items"][0]["items"]
@@ -207,8 +203,8 @@ def _extract_dataset(datasets, reco):
 
 
 def get_dataset(run_number, reconstruction_type):
-    return DQM_Session().get_dataset(run_number, reconstruction_type)
+    return DQMSession().get_dataset(run_number, reconstruction_type)
 
 
 def get_lumisections(run_number, reconstruction_type):
-    return DQM_Session().get_lumisections(run_number, reconstruction_type)
+    return DQMSession().get_lumisections(run_number, reconstruction_type)

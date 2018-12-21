@@ -72,7 +72,7 @@ optional arguments:
   --no-cache           Don't use dataset cache for offline DQM.
 ```
 
-### Offline Example
+### Example
 
 ```bash
 dqmcrawl example/runs.txt --trackingmap
@@ -81,26 +81,26 @@ dqmcrawl example/runs.txt --trackingmap
 Output:
 
 ```
-dqmcrawl example/runs.txt --trackingmap
-Crawling 12 runs of the resource TrackEtaPhi_ImpactPoint_GenTk
+Crawling 13 runs of the resource TrackEtaPhi_ImpactPoint_GenTk
 
-321012 Express... OK    0.23s
-825310 Prompt...  ERROR
-Unable to find datasets for run 825310
-325310 SomethingWrong... ERROR
-Unknown reconstruction type: 'somethingwrong'
-325310 Prompt...  OK    0.25s
-321012 Express... OK    0.22s
+321012 Express... OK    0.21s
+321012 Online...  OK    0.27s
+325310 Prompt...  OK    0.22s
+321012 Express... OK    0.24s
 321012 reReco...  ERROR
 Unable to find 'rereco' dataset
-325309 Prompt...  OK    0.22s
+325309 Prompt...  OK    0.21s
+306631 reReco...  OK    0.21s
+306631 Express... OK    0.21s
+306631 Prompt...  OK    0.21s
 327244 Express... ERROR
 Unable to find plot 'TrackEtaPhi_ImpactPoint_GenTk' for run '327244'
 327244 Prompt...  ERROR
 Unable to find plot 'TrackEtaPhi_ImpactPoint_GenTk' for run '327244'
-306631 reReco...  OK    0.23s
-306631 Express... OK    0.22s
-306631 Prompt...  OK    0.21s
+825310 Prompt...  ERROR
+Unable to find datasets for run 825310
+325310 SomethingWrong... ERROR
+Unknown reconstruction type: 'somethingwrong'
 Done.
 
 All files have been saved in the folder 'TrackEtaPhi_ImpactPoint_GenTk'

@@ -21,37 +21,43 @@ from dqmcrawlr.utils import (
 def parse_arguments():
     parser = argparse.ArgumentParser(
         description=" CMS Data Quality Monitor crawler.",
-        formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=36),
+        formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=30),
     )
 
     parser.add_argument(
-        "-i",
-        "--input",
+        "input",
         help="input file containing one run number and reconstruction type per line",
     )
 
-    parser.add_argument("-r", "--resource", help="name of the resource/ histogram")
-
-    parser.add_argument(
-        "-c",
-        "--cached",
-        help="Use existing dataset cache to save time.",
+    resource_group = parser.add_mutually_exclusive_group(required=True)
+    resource_group.add_argument("--resource", help="name of the resource/ histogram")
+    resource_group.add_argument(
+        "--trackingmap",
+        help="Shortcut for the TrackEtaPhi_ImpactPoint_GenTk resource",
         action="store_true",
     )
 
-    parser.add_argument(
-        "--online", help="Use online DQM rather than offline.", action="store_true"
+    group = parser.add_mutually_exclusive_group()
+    group.add_argument(
+        "--force-online",
+        help="Use only online DQM and ignore reconstruction type.",
+        action="store_true",
+    )
+    group.add_argument(
+        "--no-cache",
+        help="Don't use dataset cache for offline DQM.",
+        action="store_true",
     )
 
     return parser.parse_args()
 
 
 @time_measured
-def retrieve_resource(
-    crawler, run_number, reconstruction, resource, destination_folder
-):
-    json_output = crawler.get_json(run_number, reconstruction, resource)
-    path = "{}/{}_{}.json".format(destination_folder, run_number, reconstruction)
+def retrieve_resource(destination_folder, retrieval_function, *args, **kwargs):
+    json_output = retrieval_function(*args, **kwargs)
+    path = "{}/{}_{}.json".format(
+        destination_folder, kwargs["run_number"], kwargs["reconstruction"]
+    )
     save_to_disk(json.dumps(json_output, indent=2), path)
     print("OK", end="")
 
@@ -74,14 +80,18 @@ def _remove_duplicates(runs):
 def main():
     args = parse_arguments()
 
-    online_service_only = args.online
-    use_dataset_cache = args.cached
-    input_file_name = args.input
-    resource = args.resource
-
-    destination_folder = re.sub(r"\/.*\/", "", resource)
-
     check_certificates()
+
+    force_online = args.force_online
+    use_dataset_cache = False if args.no_cache or args.force_online else True
+    input_file_name = args.input
+
+    if args.trackingmap:
+        resource = "TrackEtaPhi_ImpactPoint_GenTk"
+    else:
+        resource = args.resource
+
+    destination_folder = re.search(r"\w+$", resource).group(0)
 
     dataset_cache = open_dataset_cache() if use_dataset_cache else None
 
@@ -89,21 +99,33 @@ def main():
 
     runs = open_runs(input_file_name)
 
-    if online_service_only:
+    if force_online:
         runs = _remove_duplicates(runs)
 
     print("Crawling {} runs of the resource {}\n".format(len(runs), resource))
     for run in runs:
         run_number = run["run_number"]
-        reconstruction = run["reconstruction"] if not online_service_only else "online"
+        reconstruction = run["reconstruction"] if not force_online else "online"
 
         print("{} {:10s} ".format(run_number, "{}...".format(reconstruction)), end="")
         sys.stdout.flush()
 
         try:
-            retrieve_resource(
-                crawler, run_number, reconstruction, resource, destination_folder
-            )
+            if args.trackingmap:
+                retrieve_resource(
+                    destination_folder,
+                    crawler.get_tracking_map,
+                    run_number=run_number,
+                    reconstruction=reconstruction,
+                )
+            else:
+                retrieve_resource(
+                    destination_folder,
+                    crawler.get_json,
+                    run_number=run_number,
+                    reconstruction=reconstruction,
+                    resource=args.resource,
+                )
         except Exception as e:
             print("ERROR")
             print(e)
@@ -112,7 +134,7 @@ def main():
     print()
     print("All files have been saved in the folder '{}'".format(destination_folder))
 
-    if args.cached:
+    if use_dataset_cache:
         print()
         print("Saving dataset cache...")
         save_dataset_cache_to_disk(crawler.dqm_session.cache.datasets)

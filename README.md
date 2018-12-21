@@ -54,44 +54,51 @@ dqmcrawl --help
 ```
 
 ```
-usage: dqmcrawl [-h] [-i INPUT] [-r RESOURCE] [-c]
+usage: dqmcrawl [-h] (--resource RESOURCE | --trackingmap)
+                [--online | --no-cache]
+                input
 
 CMS Data Quality Monitor crawler.
 
+positional arguments:
+  input                input file containing one run number and reconstruction
+                       type per line
+
 optional arguments:
-  -h, --help                        show this help message and exit
-  -i INPUT, --input INPUT           input file containing one run number and
-                                    reconstruction type per line
-  -r RESOURCE, --resource RESOURCE  name of the resource/ histogram
-  -c, --cached                      Use existing dataset cache to save time
+  -h, --help           show this help message and exit
+  --resource RESOURCE  name of the resource/ histogram
+  --trackingmap        Shortcut for the TrackEtaPhi_ImpactPoint_GenTk resource
+  --online             Use only online DQM and ignore reconstruction type.
+  --no-cache           Don't use dataset cache for offline DQM.
 ```
 
 ### Offline Example
 
 ```bash
-dqmcrawl --cached --input example/runs.txt --resource "/Tracking/TrackParameters/generalTracks/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk"
+dqmcrawl example/runs.txt --trackingmap
 ```
 
 Output:
 
 ```
-Crawling 12 runs of the resource /Tracking/TrackParameters/generalTracks/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
+dqmcrawl example/runs.txt --trackingmap
+Crawling 12 runs of the resource TrackEtaPhi_ImpactPoint_GenTk
 
-321012 Express... OK    0.22s
+321012 Express... OK    0.23s
 825310 Prompt...  ERROR
 Unable to find datasets for run 825310
 325310 SomethingWrong... ERROR
 Unknown reconstruction type: 'somethingwrong'
-325310 Prompt...  OK    0.22s
+325310 Prompt...  OK    0.25s
 321012 Express... OK    0.22s
 321012 reReco...  ERROR
 Unable to find 'rereco' dataset
-325309 Prompt...  OK    0.21s
+325309 Prompt...  OK    0.22s
 327244 Express... ERROR
-Unable to find plot for run '327244'
+Unable to find plot 'TrackEtaPhi_ImpactPoint_GenTk' for run '327244'
 327244 Prompt...  ERROR
-Unable to find plot for run '327244'
-306631 reReco...  OK    0.22s
+Unable to find plot 'TrackEtaPhi_ImpactPoint_GenTk' for run '327244'
+306631 reReco...  OK    0.23s
 306631 Express... OK    0.22s
 306631 Prompt...  OK    0.21s
 Done.
@@ -102,32 +109,38 @@ Saving dataset cache...
 Done.
 ```
 
+Alternatively you can use ```--resource``` to be more specific about the plot:
+
+```
+dqmcrawl example/runs.txt --resource "/Tracking/TrackParameters/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk"
+```
+
 ### Online Example
 
-**Note**: When using ```--online``` then the reconstruction type is ignored and duplicate run numbers are removed.
+**Note**: When you are only interested in the Online DQM and dont want to modify your runs.txt then you can use the ```--force-online``` parameter. The reconstruction type will then be ignored and duplicate run numbers are removed.
 
 ```bash
-dqmcrawl --online --input example/runs.txt --resource "/Tracking/TrackParameters/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk"
+dqmcrawl example/runs.txt --trackingmap --force-online
 ```
 
 Output:
 
 ```
-Crawling 6 runs of the resource /Tracking/TrackParameters/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
+Crawling 6 runs of the resource TrackEtaPhi_ImpactPoint_GenTk
 
-306631 online...  OK    0.19s
-321012 online...  OK    0.22s
+306631 online...  OK    0.22s
+321012 online...  OK    0.24s
 325309 online...  OK    0.22s
-325310 online...  OK    0.21s
+325310 online...  OK    0.23s
 327244 online...  ERROR
-Unable to find plot for run '327244'
+Unable to find plot 'TrackEtaPhi_ImpactPoint_GenTk' for run '327244'
 825310 online...  ERROR
-Unable to find plot for run '825310'
+Unable to find plot 'TrackEtaPhi_ImpactPoint_GenTk' for run '825310'
 Done.
 
 All files have been saved in the folder 'TrackEtaPhi_ImpactPoint_GenTk'
-
 ```
+
 ## Development
 
 ```bash

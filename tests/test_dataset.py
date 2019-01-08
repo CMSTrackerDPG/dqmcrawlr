@@ -59,6 +59,22 @@ def test_multipe_dataset():
     )
 
 
+def test_prompt_with_existing_rereco():
+    session = DQMSession()
+
+    assert "/ZeroBias/Run2018A-PromptReco-v1/DQMIO" == session.get_dataset(
+        315642, "Prompt"
+    )
+
+    assert "/ZeroBias/Run2018B-PromptReco-v1/DQMIO" == session.get_dataset(
+        317080, "Prompt"
+    )
+
+    assert "/ZeroBias/Run2018B-PromptReco-v1/DQMIO" == session.get_dataset(
+        317696, "Prompt"
+    )
+
+
 def test_rereco():
     session = DQMSession()
 
@@ -70,6 +86,18 @@ def test_rereco():
     )
     assert "/SingleTrack/Run2017G-17Nov2017-v1/DQMIO" == session.get_dataset(
         306584, "reReco"
+    )
+
+    assert "/ZeroBias/Run2018A-17Sep2018-v1/DQMIO" == session.get_dataset(
+        315642, "reReco"
+    )
+
+    assert "/ZeroBias/Run2018B-17Sep2018-v1/DQMIO" == session.get_dataset(
+        317080, "reReco"
+    )
+
+    assert "/ZeroBias/Run2018B-17Sep2018-v1/DQMIO" == session.get_dataset(
+        317696, "reReco"
     )
 
 

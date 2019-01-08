@@ -121,78 +121,109 @@ def get_online_session_url():
     return _get_session_url(ONLINE_URL)
 
 
+def _filter_express(datasets):
+    """
+    Filters datasets to Stream Express only.
+    """
+
+    return list(
+        filter(
+            lambda dataset: (
+                "/StreamExpress/" in dataset
+                or "/StreamExpressCosmics/" in dataset
+                or "/StreamHIExpress/" in dataset
+            )
+            and "-Express-" in dataset
+            and "/DQM" in dataset,
+            datasets,
+        )
+    )
+
+
+def _filter_prompt(datasets):
+    """
+    Filters datasets to Prompt Reco only.
+
+    Done in multiple steps because there are weird runs
+    that match all 3 filter sets e.g. "325680"
+    """
+    filtered = list(
+        filter(
+            lambda dataset: "/Cosmics/" in dataset
+            and "-PromptReco-" in dataset
+            and "/DQM" in dataset,
+            datasets,
+        )
+    )
+    if not filtered:
+        filtered = list(
+            filter(
+                lambda dataset: "/ZeroBias/" in dataset
+                and "-PromptReco-" in dataset
+                and "/DQM" in dataset,
+                datasets,
+            )
+        )
+
+    if not filtered:
+        filtered = list(
+            filter(
+                lambda dataset: "/MinimumBias/" in dataset
+                and "-PromptReco-" in dataset
+                and "/DQM" in dataset,
+                datasets,
+            )
+        )
+
+    if not filtered:
+        filtered = list(
+            filter(
+                lambda dataset: "/HIMinimumBias" in dataset
+                and "-PromptReco-" in dataset
+                and "/DQM" in dataset,
+                datasets,
+            )
+        )
+        # Use HIMinimumBias with biggest number e.g. HIMinimumBias1 instead of HIMinimumBias0
+        filtered.sort(reverse=True)
+        filtered = [filtered[0]]
+    return filtered
+
+
+def _filter_rereco(datasets):
+    """
+    Filters datasets to reReco only.
+
+    2017 the SingleTrack dataset was used.
+    """
+    return list(
+        filter(
+            lambda dataset: (
+                "/SingleTrack/" in dataset
+                and "/Run2017G" in dataset
+                or "/ZeroBias/" in dataset
+                and "/Run2017G" not in dataset
+            )
+            and "-PromptReco-" not in dataset
+            and "-Express-" not in dataset
+            and "/DQM" in dataset,
+            datasets,
+        )
+    )
+
+
 def _extract_dataset(datasets, reco):
     """
     This is horrible code, please improve it.
     """
 
     reco = reco.lower()
-    filtered = None
     if "express" == reco:
-        filtered = list(
-            filter(
-                lambda dataset: (
-                    "/StreamExpress/" in dataset
-                    or "/StreamExpressCosmics/" in dataset
-                    or "/StreamHIExpress/" in dataset
-                )
-                and "-Express-" in dataset
-                and "/DQM" in dataset,
-                datasets,
-            )
-        )
+        filtered = _filter_express(datasets)
     elif "prompt" == reco:
-        # Done in multiple steps because there are weird runs that match all 3 filter sets e.g. "325680"
-        filtered = list(
-            filter(
-                lambda dataset: "/Cosmics/" in dataset
-                and "-PromptReco-" in dataset
-                and "/DQM" in dataset,
-                datasets,
-            )
-        )
-        if not filtered:
-            filtered = list(
-                filter(
-                    lambda dataset: "/ZeroBias/" in dataset
-                    and "-PromptReco-" in dataset
-                    and "/DQM" in dataset,
-                    datasets,
-                )
-            )
-
-        if not filtered:
-            filtered = list(
-                filter(
-                    lambda dataset: "/MinimumBias/" in dataset
-                    and "-PromptReco-" in dataset
-                    and "/DQM" in dataset,
-                    datasets,
-                )
-            )
-
-        if not filtered:
-            filtered = list(
-                filter(
-                    lambda dataset: "/HIMinimumBias" in dataset
-                    and "-PromptReco-" in dataset
-                    and "/DQM" in dataset,
-                    datasets,
-                )
-            )
-            # Use HIMinimumBias with biggest number e.g. HIMinimumBias1 instead of HIMinimumBias0
-            filtered.sort(reverse=True)
-            filtered = [filtered[0]]
+        filtered = _filter_prompt(datasets)
     elif "rereco" == reco:
-        filtered = list(
-            filter(
-                lambda dataset: "/SingleTrack/" in dataset
-                and "-PromptReco-" not in dataset
-                and "-Express-" not in dataset
-                and "/DQM" in dataset,
-                datasets,
-            )
-        )
+        filtered = _filter_rereco(datasets)
     else:
         raise ValueError("Unknown reconstruction type: '{}'".format(reco))
 

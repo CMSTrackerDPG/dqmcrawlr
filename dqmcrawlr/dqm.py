@@ -57,7 +57,7 @@ class DQMSession:
             items = json_response[1]["items"][0]["items"]
         except IndexError:
             raise RunDoesNotExist(
-                "Unable to find datasets for run {}".format(run_number)
+                "Unable to find datasets for run '{}'".format(run_number)
             )
         datasets = [item["dataset"] for item in items]
 
@@ -186,7 +186,7 @@ def _filter_prompt(datasets):
         )
         # Use HIMinimumBias with biggest number e.g. HIMinimumBias1 instead of HIMinimumBias0
         filtered.sort(reverse=True)
-        filtered = [filtered[0]]
+        filered = [filtered[0]]
     return filtered
 
 
@@ -221,7 +221,10 @@ def _extract_dataset(datasets, reco):
     if "express" == reco:
         filtered = _filter_express(datasets)
     elif "prompt" == reco:
-        filtered = _filter_prompt(datasets)
+        try:
+            filtered = _filter_prompt(datasets)
+        except IndexError:
+            raise DatasetDoesNotExist("Unable to find '{}' dataset".format(reco))
     elif "rereco" == reco:
         filtered = _filter_rereco(datasets)
     else:
@@ -229,7 +232,11 @@ def _extract_dataset(datasets, reco):
 
     if not filtered:
         raise DatasetDoesNotExist("Unable to find '{}' dataset".format(reco))
-    assert len(filtered) == 1
+    try:
+        assert len(filtered) == 1
+    except AssertionError:
+        # Use version with highest number
+        filtered.sort(reverse=True)
     return filtered[0]
 
 

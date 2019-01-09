@@ -58,6 +58,12 @@ def test_multipe_dataset():
         319882, "Express"
     )
 
+def test_prompt():
+    session = DQMSession()
+    assert "/ZeroBias/Run2018A-PromptReco-v3/DQMIO" == session.get_dataset(
+        316944, "Prompt"
+    )
+
 
 def test_prompt_with_existing_rereco():
     session = DQMSession()

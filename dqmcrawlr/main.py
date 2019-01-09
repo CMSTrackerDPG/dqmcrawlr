@@ -10,12 +10,17 @@ from cernrequests import certs
 
 from dqmcrawlr.crawler import DQMCrawler
 from dqmcrawlr.decorators import time_measured
+from dqmcrawlr.exceptions import DatasetDoesNotExist
 from dqmcrawlr.utils import (
     open_runs,
     save_to_disk,
     open_dataset_cache,
     save_dataset_cache_to_disk,
+    get_configured_logger,
 )
+
+logfile = "dqmcrawlr.log"
+logger = get_configured_logger(__name__, logfile)
 
 
 def parse_arguments():
@@ -102,7 +107,7 @@ def main():
     if force_online:
         runs = _remove_duplicates(runs)
 
-    print("Crawling {} runs of the resource {}\n".format(len(runs), resource))
+    logger.info("Crawling {} runs of the resource {}\n".format(len(runs), resource))
     for run in runs:
         run_number = run["run_number"]
         reconstruction = run["reconstruction"] if not force_online else "online"
@@ -126,19 +131,30 @@ def main():
                     reconstruction=reconstruction,
                     resource=args.resource,
                 )
+        except AssertionError:
+            logger.error("Assertion error for run '{}'")
+        except DatasetDoesNotExist:
+            print("ERROR")
+            logger.error(
+                "{} dataset does not exist for run '{}'".format(
+                    reconstruction, run_number
+                )
+            )
         except Exception as e:
             print("ERROR")
-            print(e)
+            logger.error(e)
 
-    print("Done.")
+    logger.info("Done.")
     print()
-    print("All files have been saved in the folder '{}'".format(destination_folder))
+    logger.info(
+        "All files have been saved in the folder '{}'".format(destination_folder)
+    )
 
     if use_dataset_cache:
         print()
-        print("Saving dataset cache...")
+        logger.info("Saving dataset cache...")
         save_dataset_cache_to_disk(crawler.dqm_session.cache.datasets)
-        print("Done.")
+        logger.info("Done.")
 
 
 if __name__ == "__main__":

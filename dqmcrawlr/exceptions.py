@@ -8,3 +8,7 @@ class DatasetDoesNotExist(Exception):
 
 class JSONNotFound(Exception):
     pass
+
+
+class UnknownReconstruction(Exception):
+    pass

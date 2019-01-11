@@ -58,6 +58,7 @@ def test_multipe_dataset():
         319882, "Express"
     )
 
+
 def test_prompt():
     session = DQMSession()
     assert "/ZeroBias/Run2018A-PromptReco-v3/DQMIO" == session.get_dataset(

@@ -1,7 +1,7 @@
 import cernrequests
 import re
 
-from .exceptions import RunDoesNotExist, DatasetDoesNotExist
+from .exceptions import RunDoesNotExist, DatasetDoesNotExist, UnknownReconstruction
 
 OFFLINE_URL = "https://cmsweb.cern.ch/dqm/offline/"
 ONLINE_URL = "https://cmsweb.cern.ch/dqm/online/"
@@ -228,7 +228,7 @@ def _extract_dataset(datasets, reco):
     elif "rereco" == reco:
         filtered = _filter_rereco(datasets)
     else:
-        raise ValueError("Unknown reconstruction type: '{}'".format(reco))
+        raise UnknownReconstruction("Unknown reconstruction type: '{}'".format(reco))
 
     if not filtered:
         raise DatasetDoesNotExist("Unable to find '{}' dataset".format(reco))

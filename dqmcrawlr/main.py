@@ -82,6 +82,15 @@ def _remove_duplicates(runs):
     return [{"run_number": run_number} for run_number in run_numbers]
 
 
+errors = {}
+
+
+def _add_error(error, run):
+    if error not in errors:
+        errors[error] = []
+    errors[error].append(run)
+
+
 def main():
     args = parse_arguments()
 
@@ -108,6 +117,7 @@ def main():
         runs = _remove_duplicates(runs)
 
     logger.info("Crawling {} runs of the resource {}\n".format(len(runs), resource))
+
     for run in runs:
         run_number = run["run_number"]
         reconstruction = run["reconstruction"] if not force_online else "online"
@@ -132,8 +142,10 @@ def main():
                     resource=args.resource,
                 )
         except AssertionError:
+            _add_error("AssertionError", (run_number, reconstruction))
             logger.error("Assertion error for run '{}'")
         except DatasetDoesNotExist:
+            _add_error("DatasetDoesNotExist", (run_number, reconstruction))
             print("ERROR")
             logger.error(
                 "{} dataset does not exist for run '{}'".format(
@@ -141,6 +153,7 @@ def main():
                 )
             )
         except Exception as e:
+            _add_error(e.__class__.__name__, (run_number, reconstruction))
             print("ERROR")
             logger.error(e)
 
@@ -155,6 +168,12 @@ def main():
         logger.info("Saving dataset cache...")
         save_dataset_cache_to_disk(crawler.dqm_session.cache.datasets)
         logger.info("Done.")
+
+    if errors:
+        print()
+        print("=== Errors ===")
+        for key, value in errors.iteritems():
+            print("{:25} {}".format("{}:".format(key), value))
 
 
 if __name__ == "__main__":

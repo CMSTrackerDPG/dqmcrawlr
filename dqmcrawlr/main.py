@@ -66,10 +66,10 @@ def parse_arguments():
 @time_measured
 def retrieve_resource(destination_folder, retrieval_function, *args, **kwargs):
     json_output = retrieval_function(*args, **kwargs)
-    path = "{}/{}_{}.json".format(
-        destination_folder, kwargs["run_number"], kwargs["reconstruction"]
+    file_name = "{}/{}_{}.json".format(
+        destination_folder, kwargs["run_number"], kwargs["reconstruction"].lower()
     )
-    save_to_disk(json.dumps(json_output, indent=2), path)
+    save_to_disk(json.dumps(json_output, indent=2), file_name)
     print("OK", end="")
 
 

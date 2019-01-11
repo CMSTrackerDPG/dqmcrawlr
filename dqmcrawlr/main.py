@@ -172,7 +172,7 @@ def main():
     if errors:
         print()
         print("=== Errors ===")
-        for key, value in errors.iteritems():
+        for key, value in errors.items():
             print("{:25} {}".format("{}:".format(key), value))
 
 

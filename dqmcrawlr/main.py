@@ -19,6 +19,8 @@ from dqmcrawlr.utils import (
     get_configured_logger,
 )
 
+from dqmcrawlr import __version__
+
 logfile = "dqmcrawlr.log"
 logger = get_configured_logger(__name__, logfile)
 
@@ -27,6 +29,10 @@ def parse_arguments():
     parser = argparse.ArgumentParser(
         description=" CMS Data Quality Monitor crawler.",
         formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=30),
+    )
+
+    parser.add_argument(
+        "--version", action="version", version="%(prog)s {}".format(__version__)
     )
 
     parser.add_argument(

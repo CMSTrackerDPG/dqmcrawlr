@@ -156,11 +156,11 @@ The resource name is a little bit different between the Online and the Offline i
 
 For example, the resource name of the tracking map lacks a "generalTracks" in the name.
 
-Online ame:
-/Tracking/TrackParameters/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
+Online name:
+- /Tracking/TrackParameters/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
 
 Offline name:
-/Tracking/TrackParameters/**generalTracks**/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
+- /Tracking/TrackParameters/**generalTracks**/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
 
 ## More Examples
 

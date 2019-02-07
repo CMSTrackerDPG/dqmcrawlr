@@ -150,6 +150,45 @@ All files have been saved in the folder 'TrackEtaPhi_ImpactPoint_GenTk'
 JSONNotFound:             [('327244', 'online'), ('825310', 'online')]
 ```
 
+## Notes
+
+The resource name is a little bit different between the Online and the Offline in the CMS GUI.
+
+For example, the resource name of the tracking map lacks a "generalTracks" in the name.
+
+Online ame:
+/Tracking/TrackParameters/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
+
+Offline name:
+/Tracking/TrackParameters/**generalTracks**/GeneralProperties/TrackEtaPhi_ImpactPoint_GenTk
+
+## More Examples
+
+The following commands will download the "Quick collection" page of the CMS GUI:
+
+```bash
+# 02a - Tracks (pp collisions)
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/GeneralProperties/NumberOfTracks_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/HitProperties/NumberOfRecHitsPerTrack_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/GeneralProperties/TrackPt_ImpactPoint_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/GeneralProperties/Chi2oNDF_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/GeneralProperties/TrackPhi_ImpactPoint_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/GeneralProperties/TrackEta_ImpactPoint_GenTk"
+
+# 02b - Total Hits Strip and Pixel (pp)
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_initialStepSeeds_initialStep"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/HitProperties/Pixel/NumberOfRecHitsPerTrack_Pixel_GenTk"
+
+# 06 - Number of Seeds (pp collisions)
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_initialStepSeeds_initialStep"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_lowPtTripletStepSeeds_lowPtTripletStep"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_pixelPairStepSeeds_pixelPairStep"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_detachedTripletStepSeeds_detachedTripletStep"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_mixedTripletStepSeeds_mixedTripletStep"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_pixelLessStepSeeds_pixelLessStep"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_tobTecStepSeeds_tobTecStep"
+```
+
 ## Development
 
 ```bash

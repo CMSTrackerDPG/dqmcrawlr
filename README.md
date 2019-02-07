@@ -176,7 +176,7 @@ dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/Ge
 dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/GeneralProperties/TrackEta_ImpactPoint_GenTk"
 
 # 02b - Total Hits Strip and Pixel (pp)
-dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_initialStepSeeds_initialStep"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/HitProperties/Strip/NumberOfRecHitsPerTrack_Strip_GenTk"
 dqmcrawl runs.txt --resource "/Tracking/TrackParameters/highPurityTracks/pt_1/HitProperties/Pixel/NumberOfRecHitsPerTrack_Pixel_GenTk"
 
 # 06 - Number of Seeds (pp collisions)

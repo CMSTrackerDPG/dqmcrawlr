@@ -216,7 +216,7 @@ dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/adc_per_LumiBlo
 
 # PixelPhase1 Cluster Number
 dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/num_clusters_PXBarrel"
-dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/num_clusters_PXBarrel"
+dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/num_clusters_PXForward"
 dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/num_clusters_per_LumiBlock_PXBarrel"
 dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/num_clusters_per_LumiBlock_PXForward"
 

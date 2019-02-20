@@ -111,7 +111,7 @@ def main():
     else:
         resource = args.resource
 
-    destination_folder = re.search(r"\w+$", resource).group(0)
+    destination_folder = resource.split("/")[-1]
 
     dataset_cache = open_dataset_cache() if use_dataset_cache else None
 

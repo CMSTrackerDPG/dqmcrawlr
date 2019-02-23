@@ -166,7 +166,9 @@ Offline name:
 
 ### Quick Collections
 
-#### Tracking
+#### Offline
+
+##### Tracking
 
 The following commands will download all histograms of the "Quick collection" page of the Tracking workspace in the CMS GUI:
 
@@ -193,7 +195,7 @@ dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuild
 dqmcrawl runs.txt --resource "/Tracking/TrackParameters/generalTracks/TrackBuilding/NumberOfSeeds_tobTecStepSeeds_tobTecStep"
 ```
 
-#### PixelPhase1
+##### PixelPhase1
 
 ```bash
 # Rate of Pixel Events by BX
@@ -271,7 +273,121 @@ dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/size_PXDisk_-2"
 dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/size_PXDisk_-3"
 ```
 
-#### SiStrip
+##### SiStrip
+
+```bash
+# FED Detected Errors Summary
+dqmcrawl runs.txt --resource "/SiStrip/ReadoutView/FED/nFEDErrors"
+dqmcrawl runs.txt --resource "/SiStrip/ReadoutView/Fiber/nBadActiveChannelStatusBits"
+
+# OnTrackCluster (StoN)
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TIB/Summary_ClusterStoNCorr_OnTrack__TIB"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TOB/Summary_ClusterStoNCorr_OnTrack__TOB"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TID/MINUS/Summary_ClusterStoNCorr_OnTrack__TID__MINUS"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TID/PLUS/Summary_ClusterStoNCorr_OnTrack__TID__PLUS"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TEC/MINUS/Summary_ClusterStoNCorr_OnTrack__TEC__MINUS"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TEC/PLUS/Summary_ClusterStoNCorr_OnTrack__TEC__PLUS"
+
+# OffTrackCluster (Total Number)
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TIB/Summary_TotalNumberOfClusters_OffTrack__TIB"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TOB/Summary_TotalNumberOfClusters_OffTrack__TOB"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TID/MINUS/Summary_TotalNumberOfClusters_OffTrack__TID__MINUS"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TID/PLUS/Summary_TotalNumberOfClusters_OffTrack__TID__PLUS"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TEC/MINUS/Summary_TotalNumberOfClusters_OffTrack__TEC__MINUS"
+dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TEC/PLUS/Summary_TotalNumberOfClusters_OffTrack__TEC__PLUS"
+```
+
+
+#### Online
+
+##### Tracking
+
+The following commands will download all histograms of the "Quick collection" page of the Tracking workspace in the CMS GUI:
+
+```bash
+# 02a - Tracks (pp collisions)
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/GeneralProperties/NumberOfTracks_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/HitProperties/NumberOfRecHitsPerTrack_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/GeneralProperties/TrackPt_ImpactPoint_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/GeneralProperties/Chi2oNDF_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/GeneralProperties/TrackPhi_ImpactPoint_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/GeneralProperties/TrackEta_ImpactPoint_GenTk"
+
+# 02b - Total Hits Strip and Pixel (pp)
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/HitProperties/Strip/NumberOfRecHitsPerTrack_Strip_GenTk"
+dqmcrawl runs.txt --resource "/Tracking/TrackParameters/HitProperties/Pixel/NumberOfRecHitsPerTrack_Pixel_GenTk"
+```
+
+##### PixelPhase1
+
+```bash
+# Rate of Pixel Events by BX
+dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/eventrate_per_BX"
+
+# PixelPhas1 Digi ADC Barrel
+dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/num_digis_PXBarrel"
+dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/adc_PXBarrel"
+
+# PixelPhas1 Digi ADC Endcap
+dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/num_digis_PXForward"
+dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/adc_PXForward"
+
+# PixelPhase1 Cluster Number
+dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/num_clusters_PXBarrel"
+dqmcrawl runs.txt --resource "/PixelPhase1/Phase1_MechanicalView/num_clusters_PXForward"
+
+# ntracks
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/ntracks"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/ntracksinpixvolume"
+
+# Charge and size
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/charge_PXBarrel"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/charge_PXForward"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/size_PXBarrel"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/size_PXForward"
+
+# Cluster on track charge per Inner
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/chargeInner_PXLayer_1"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/chargeInner_PXLayer_2"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/chargeInner_PXLayer_3"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/chargeInner_PXLayer_4"
+
+# Cluster on track charge per Outer
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/chargeOuter_PXLayer_1"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/chargeOuter_PXLayer_2"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/chargeOuter_PXLayer_3"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/chargeOuter_PXLayer_4"
+
+# Cluster charge (on-track) per Disk
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/charge_PXDisk_+1"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/charge_PXDisk_+2"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/charge_PXDisk_+3"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/charge_PXDisk_-1"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/charge_PXDisk_-2"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/charge_PXDisk_-3"
+
+# PixelPhase1 Residuals
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/residual_x_PXBarrel"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/residual_x_PXForward"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/residual_y_PXBarrel"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/residual_y_PXForward"
+
+# Cluster size (on-track) per  
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/size_PXLayer_1"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/size_PXLayer_2"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/size_PXLayer_3"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXBarrel/size_PXLayer_4"
+
+# Cluster size (on-track) per Disk
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/size_PXDisk_+1"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/size_PXDisk_+2"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/size_PXDisk_+3"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/size_PXDisk_-1"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/size_PXDisk_-2"
+dqmcrawl runs.txt --resource "/PixelPhase1/Tracks/PXForward/size_PXDisk_-3"
+```
+
+##### SiStrip
 
 ```bash
 # FED Detected Errors Summary

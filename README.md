@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.com/ptrstn/dqmcrawlr.svg?branch=master)](https://travis-ci.com/ptrstn/dqmcrawlr)
+[![Build Status](https://travis-ci.com/CMSTrackerDPG/dqmcrawlr.svg?branch=master)](https://travis-ci.com/CMSTrackerDPG/dqmcrawlr)
 
 # dqmcrawlr
 
@@ -7,7 +7,7 @@ Tool used to crawl a few plots from the CMS Data Quality Monitor web tool.
 ## Installation
 
 ```bash
-pip install git+https://github.com/ptrstn/dqmcrawlr
+pip install git+https://github.com/CMSTrackerDPG/dqmcrawlr
 ```
 
 ### lxplus
@@ -29,7 +29,7 @@ Then you can install dqmcrawlr it with:
 ```bash
 virtualenv venv
 . venv/bin/activate
-pip install git+https://github.com/ptrstn/dqmcrawlr
+pip install git+https://github.com/CMSTrackerDPG/dqmcrawlr
 ```
 
 ## Prerequisites
@@ -414,7 +414,7 @@ dqmcrawl runs.txt --resource "/SiStrip/MechanicalView/TEC/PLUS/Summary_TotalNumb
 ## Development
 
 ```bash
-git clone https://github.com/ptrstn/dqmcrawlr
+git clone https://github.com/CMSTrackerDPG/dqmcrawlr
 cd dqmcrawlr
 python3 -m venv venv
 . venv/bin/active
